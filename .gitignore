@@ -1,0 +1,17 @@
+# Dependencies and build output. Each app also has its own ignore file.
+node_modules/
+.next/
+out/
+dist/
+.sanity/
+
+# Local secrets
+.env
+.env.*
+!.env.example
+
+# Logs and OS files
+*.log
+.DS_Store
+*.pem
+*.tsbuildinfo
