@@ -30,6 +30,109 @@
     }
   },
   {
+    "name": "rings",
+    "type": "type",
+    "value": {
+      "type": "object",
+      "attributes": {
+        "_type": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string",
+            "value": "rings"
+          }
+        },
+        "innerRadiusKm": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "number"
+          },
+          "optional": true
+        },
+        "outerRadiusKm": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "number"
+          },
+          "optional": true
+        }
+      }
+    }
+  },
+  {
+    "name": "physical",
+    "type": "type",
+    "value": {
+      "type": "object",
+      "attributes": {
+        "_type": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string",
+            "value": "physical"
+          }
+        },
+        "meanRadiusKm": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "number"
+          },
+          "optional": true
+        },
+        "rotationPeriodHours": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "number"
+          },
+          "optional": true
+        },
+        "axialTiltDegrees": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "number"
+          },
+          "optional": true
+        },
+        "semiMajorAxisKm": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "number"
+          },
+          "optional": true
+        },
+        "orbitalPeriodDays": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "number"
+          },
+          "optional": true
+        },
+        "eccentricity": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "number"
+          },
+          "optional": true
+        },
+        "inclinationDegrees": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "number"
+          },
+          "optional": true
+        },
+        "rings": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "inline",
+            "name": "rings"
+          },
+          "optional": true
+        }
+      }
+    }
+  },
+  {
     "type": "type",
     "name": "body.reference",
     "value": {
@@ -226,6 +329,14 @@
               }
             }
           }
+        },
+        "optional": true
+      },
+      "physical": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "inline",
+          "name": "physical"
         },
         "optional": true
       },

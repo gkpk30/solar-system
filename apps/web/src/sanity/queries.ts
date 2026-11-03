@@ -13,6 +13,17 @@ const imageFields = /* groq */ `
   }
 `;
 
+const physicalFields = /* groq */ `
+  meanRadiusKm,
+  rotationPeriodHours,
+  axialTiltDegrees,
+  semiMajorAxisKm,
+  orbitalPeriodDays,
+  eccentricity,
+  inclinationDegrees,
+  rings{innerRadiusKm, outerRadiusKm}
+`;
+
 export const BODY_SLUGS_QUERY = defineQuery(/* groq */ `
   *[_type == "body" && defined(slug.current)].slug.current
 `);
@@ -50,6 +61,7 @@ export const SOLAR_SYSTEM_QUERY = defineQuery(/* groq */ `
       description,
       facts[]{_key, name, value},
       image{${imageFields}},
+      physical{${physicalFields}},
       "moons": *[_type == "body" && kind == "moon" && orbits._ref == ^._id] | order(name asc){
         _id,
         name,
@@ -57,7 +69,8 @@ export const SOLAR_SYSTEM_QUERY = defineQuery(/* groq */ `
         kind,
         description,
         facts[]{_key, name, value},
-        image{${imageFields}}
+        image{${imageFields}},
+        physical{${physicalFields}}
       }
     }
   }

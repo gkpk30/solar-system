@@ -21,6 +21,24 @@ export type Fact = {
   value?: string;
 };
 
+export type Rings = {
+  _type: "rings";
+  innerRadiusKm?: number;
+  outerRadiusKm?: number;
+};
+
+export type Physical = {
+  _type: "physical";
+  meanRadiusKm?: number;
+  rotationPeriodHours?: number;
+  axialTiltDegrees?: number;
+  semiMajorAxisKm?: number;
+  orbitalPeriodDays?: number;
+  eccentricity?: number;
+  inclinationDegrees?: number;
+  rings?: Rings;
+};
+
 export type BodyReference = {
   _ref: string;
   _type: "reference";
@@ -54,6 +72,7 @@ export type Body = {
     alt?: string;
     _type: "image";
   };
+  physical?: Physical;
   facts?: Array<
     {
       _key: string;
@@ -196,6 +215,8 @@ export type Geopoint = {
 
 export type AllSanitySchemaTypes =
   | Fact
+  | Rings
+  | Physical
   | BodyReference
   | SanityImageAssetReference
   | Body
@@ -259,7 +280,7 @@ export type BODY_QUERY_RESULT = {
 
 // Source: ../web/src/sanity/queries.ts
 // Variable: SOLAR_SYSTEM_QUERY
-// Query: *[_type == "solarSystem"][0]{    _id,    name,    bodies[]->{      _id,      name,      "slug": slug.current,      kind,      description,      facts[]{_key, name, value},      image{  alt,  hotspot,  crop,  asset->{    _id,    metadata{      lqip,      dimensions{width, height}    }  }},      "moons": *[_type == "body" && kind == "moon" && orbits._ref == ^._id] | order(name asc){        _id,        name,        "slug": slug.current,        kind,        description,        facts[]{_key, name, value},        image{  alt,  hotspot,  crop,  asset->{    _id,    metadata{      lqip,      dimensions{width, height}    }  }}      }    }  }
+// Query: *[_type == "solarSystem"][0]{    _id,    name,    bodies[]->{      _id,      name,      "slug": slug.current,      kind,      description,      facts[]{_key, name, value},      image{  alt,  hotspot,  crop,  asset->{    _id,    metadata{      lqip,      dimensions{width, height}    }  }},      physical{  meanRadiusKm,  rotationPeriodHours,  axialTiltDegrees,  semiMajorAxisKm,  orbitalPeriodDays,  eccentricity,  inclinationDegrees,  rings{innerRadiusKm, outerRadiusKm}},      "moons": *[_type == "body" && kind == "moon" && orbits._ref == ^._id] | order(name asc){        _id,        name,        "slug": slug.current,        kind,        description,        facts[]{_key, name, value},        image{  alt,  hotspot,  crop,  asset->{    _id,    metadata{      lqip,      dimensions{width, height}    }  }},        physical{  meanRadiusKm,  rotationPeriodHours,  axialTiltDegrees,  semiMajorAxisKm,  orbitalPeriodDays,  eccentricity,  inclinationDegrees,  rings{innerRadiusKm, outerRadiusKm}}      }    }  }
 export type SOLAR_SYSTEM_QUERY_RESULT = {
   _id: string;
   name: string | null;
@@ -289,6 +310,19 @@ export type SOLAR_SYSTEM_QUERY_RESULT = {
         } | null;
       } | null;
     } | null;
+    physical: {
+      meanRadiusKm: number | null;
+      rotationPeriodHours: number | null;
+      axialTiltDegrees: number | null;
+      semiMajorAxisKm: number | null;
+      orbitalPeriodDays: number | null;
+      eccentricity: number | null;
+      inclinationDegrees: number | null;
+      rings: {
+        innerRadiusKm: number | null;
+        outerRadiusKm: number | null;
+      } | null;
+    } | null;
     moons: Array<{
       _id: string;
       name: string | null;
@@ -315,6 +349,19 @@ export type SOLAR_SYSTEM_QUERY_RESULT = {
           } | null;
         } | null;
       } | null;
+      physical: {
+        meanRadiusKm: number | null;
+        rotationPeriodHours: number | null;
+        axialTiltDegrees: number | null;
+        semiMajorAxisKm: number | null;
+        orbitalPeriodDays: number | null;
+        eccentricity: number | null;
+        inclinationDegrees: number | null;
+        rings: {
+          innerRadiusKm: number | null;
+          outerRadiusKm: number | null;
+        } | null;
+      } | null;
     }>;
   }> | null;
 } | null;
@@ -324,7 +371,7 @@ declare global {
   interface SanityQueries {
     '\n  *[_type == "body" && defined(slug.current)].slug.current\n': BODY_SLUGS_QUERY_RESULT;
     '\n  *[_type == "body" && slug.current == $slug][0]{\n    _id,\n    name,\n    "slug": slug.current,\n    kind,\n    description,\n    facts[]{_key, name, value},\n    image{\n  alt,\n  hotspot,\n  crop,\n  asset->{\n    _id,\n    metadata{\n      lqip,\n      dimensions{width, height}\n    }\n  }\n},\n    orbits->{\n      name,\n      "slug": slug.current\n    },\n    "moons": *[_type == "body" && kind == "moon" && orbits._ref == ^._id] | order(name asc){\n      _id,\n      name,\n      "slug": slug.current\n    }\n  }\n': BODY_QUERY_RESULT;
-    '\n  *[_type == "solarSystem"][0]{\n    _id,\n    name,\n    bodies[]->{\n      _id,\n      name,\n      "slug": slug.current,\n      kind,\n      description,\n      facts[]{_key, name, value},\n      image{\n  alt,\n  hotspot,\n  crop,\n  asset->{\n    _id,\n    metadata{\n      lqip,\n      dimensions{width, height}\n    }\n  }\n},\n      "moons": *[_type == "body" && kind == "moon" && orbits._ref == ^._id] | order(name asc){\n        _id,\n        name,\n        "slug": slug.current,\n        kind,\n        description,\n        facts[]{_key, name, value},\n        image{\n  alt,\n  hotspot,\n  crop,\n  asset->{\n    _id,\n    metadata{\n      lqip,\n      dimensions{width, height}\n    }\n  }\n}\n      }\n    }\n  }\n': SOLAR_SYSTEM_QUERY_RESULT;
+    '\n  *[_type == "solarSystem"][0]{\n    _id,\n    name,\n    bodies[]->{\n      _id,\n      name,\n      "slug": slug.current,\n      kind,\n      description,\n      facts[]{_key, name, value},\n      image{\n  alt,\n  hotspot,\n  crop,\n  asset->{\n    _id,\n    metadata{\n      lqip,\n      dimensions{width, height}\n    }\n  }\n},\n      physical{\n  meanRadiusKm,\n  rotationPeriodHours,\n  axialTiltDegrees,\n  semiMajorAxisKm,\n  orbitalPeriodDays,\n  eccentricity,\n  inclinationDegrees,\n  rings{innerRadiusKm, outerRadiusKm}\n},\n      "moons": *[_type == "body" && kind == "moon" && orbits._ref == ^._id] | order(name asc){\n        _id,\n        name,\n        "slug": slug.current,\n        kind,\n        description,\n        facts[]{_key, name, value},\n        image{\n  alt,\n  hotspot,\n  crop,\n  asset->{\n    _id,\n    metadata{\n      lqip,\n      dimensions{width, height}\n    }\n  }\n},\n        physical{\n  meanRadiusKm,\n  rotationPeriodHours,\n  axialTiltDegrees,\n  semiMajorAxisKm,\n  orbitalPeriodDays,\n  eccentricity,\n  inclinationDegrees,\n  rings{innerRadiusKm, outerRadiusKm}\n}\n      }\n    }\n  }\n': SOLAR_SYSTEM_QUERY_RESULT;
   }
 }
 // Lets @sanity/client releases that predate the global registry read it too

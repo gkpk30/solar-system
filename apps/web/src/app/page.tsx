@@ -2,6 +2,8 @@ import Link from "next/link";
 import {Suspense} from "react";
 
 import {BodyPicture, FactList} from "@/components/body-content";
+import {prepareModel} from "@/components/solar-model/prepare";
+import {SolarSystemView} from "@/components/solar-model/view";
 import {cachedSanity} from "@/sanity/live";
 import {SOLAR_SYSTEM_QUERY} from "@/sanity/queries";
 
@@ -36,8 +38,10 @@ export default function Home() {
 async function SolarSystemPage() {
   const solarSystem = await loadSolarSystem();
 
+  const model = prepareModel(solarSystem?.bodies ?? null);
+
   return (
-    <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-10 px-6 py-12">
+    <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-10 px-6 py-12">
       <header className="flex flex-col gap-2">
         <p className="text-sm font-medium tracking-wide text-zinc-500 uppercase">
           Solar system
@@ -46,6 +50,11 @@ async function SolarSystemPage() {
           {solarSystem?.name ?? "No solar system yet"}
         </h1>
       </header>
+      {model.ok ? (
+        <SolarSystemView planets={model.planets} star={model.star} />
+      ) : (
+        <p className="text-zinc-600 dark:text-zinc-400">{model.reason}</p>
+      )}
       {solarSystem?.bodies?.length ? (
         <div className="flex flex-col gap-12">
           {solarSystem.bodies.map((body) =>

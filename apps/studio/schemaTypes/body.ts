@@ -38,7 +38,8 @@ export const body = defineType({
     defineField({
       name: 'kind',
       type: 'string',
-      description: 'Star for the Sun, planet for the eight planets, moon for a body that orbits a planet.',
+      description:
+        'Star for the Sun, planet for the eight planets, moon for a body that orbits a planet.',
       options: {
         list: [
           {title: 'Star', value: 'star'},
@@ -81,6 +82,13 @@ export const body = defineType({
           validation: (rule) => rule.required().warning('Alt text is important for SEO'),
         }),
       ],
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'physical',
+      type: 'physical',
+      description:
+        'Measured size, spin, and orbit. The model is calculated from these numbers. Facts stay written out for reading.',
       validation: (rule) => rule.required(),
     }),
     defineField({
