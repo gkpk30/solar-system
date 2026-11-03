@@ -23,10 +23,14 @@ export const body = defineType({
             return 'Slug must be lowercase with hyphens only'
           }
           const client = context.getClient({apiVersion: '2026-11-02'})
-          const id = context.document?._id?.replace(/^drafts\./, '')
+          const publishedId = context.document?._id?.replace(/^drafts\./, '')
           const existing = await client.fetch(
-            `count(*[_type == "body" && slug.current == $slug && _id != $id])`,
-            {slug: slug.current, id},
+            `count(*[_type == "body" && slug.current == $slug && !(_id in [$publishedId, $draftId])])`,
+            {
+              slug: slug.current,
+              publishedId,
+              draftId: `drafts.${publishedId}`,
+            },
           )
           return existing === 0 || 'Slug already exists'
         }),
