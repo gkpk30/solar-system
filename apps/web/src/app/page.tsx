@@ -1,4 +1,5 @@
 import Link from "next/link";
+import {Suspense} from "react";
 
 import {BodyPicture, FactList} from "@/components/body-content";
 import {cachedSanity} from "@/sanity/live";
@@ -18,7 +19,21 @@ type Body = NonNullable<NonNullable<SolarSystem["bodies"]>[number]>;
 type Moon = NonNullable<Body["moons"]>[number];
 type DisplayBody = Body | Moon;
 
-export default async function Home() {
+export default function Home() {
+  return (
+    <Suspense
+      fallback={
+        <main className="mx-auto flex w-full max-w-3xl flex-1 px-6 py-12">
+          <p className="text-sm text-zinc-500">Solar system</p>
+        </main>
+      }
+    >
+      <SolarSystemPage />
+    </Suspense>
+  );
+}
+
+async function SolarSystemPage() {
   const solarSystem = await loadSolarSystem();
 
   return (

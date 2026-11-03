@@ -1,5 +1,6 @@
 import type {Metadata} from "next";
 import Link from "next/link";
+import {Suspense} from "react";
 import {notFound} from "next/navigation";
 
 import {BodyPicture, FactList} from "@/components/body-content";
@@ -27,12 +28,25 @@ export async function generateMetadata({
 }: {
   params: Promise<{slug: string}>;
 }): Promise<Metadata> {
-  const {slug} = await params;
-  const body = await loadBody(slug);
+  const body = await loadBody((await params).slug);
   return {title: body?.name ?? "Body"};
 }
 
-export default async function BodyPage({params}: {params: Promise<{slug: string}>}) {
+export default function BodyPage({params}: {params: Promise<{slug: string}>}) {
+  return (
+    <Suspense
+      fallback={
+        <main className="mx-auto flex w-full max-w-3xl flex-1 px-6 py-12">
+          <p className="text-sm font-medium text-zinc-500">Solar system</p>
+        </main>
+      }
+    >
+      <PublishedBody params={params} />
+    </Suspense>
+  );
+}
+
+async function PublishedBody({params}: {params: Promise<{slug: string}>}) {
   const {slug} = await params;
   const body = await loadBody(slug);
   if (!body) notFound();

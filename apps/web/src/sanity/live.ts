@@ -21,6 +21,8 @@ const publishedContentCache = {
 
 export const cachedSanity: StrictDefinedFetchType = async (options) => {
   "use cache";
+  const result = await sanityFetch(options);
+  // sanityFetch sets a year-long lifetime. The shorter one wins, so call this after.
   cacheLife(publishedContentCache);
-  return sanityFetch(options);
+  return result;
 };
